@@ -1,0 +1,1 @@
+# xdclass_1024_shop
