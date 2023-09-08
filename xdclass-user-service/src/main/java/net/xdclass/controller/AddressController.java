@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
  * 电商-公司收发货地址表 前端控制器
  * </p>
  *
- * @author 二当家小D
- * @since 2021-01-26
  */
 @Api(tags = "收货地址模块")
 @RestController

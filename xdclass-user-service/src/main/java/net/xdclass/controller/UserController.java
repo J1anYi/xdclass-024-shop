@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ *  用户控制器
  * </p>
  *
- * @author 二当家小D
- * @since 2021-01-26
  */
+
 @Api(tags = "用户模块")
 @RestController
 @RequestMapping("/api/user/v1/")
