@@ -68,4 +68,15 @@ public class CommonUtil {
         return null;
 
     }
+
+
+    public static String generateCode(int length) {
+        String source = "0123456789";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            sb.append(source.charAt((int) (Math.random() * source.length())));
+        }
+
+        return sb.toString();
+    }
 }

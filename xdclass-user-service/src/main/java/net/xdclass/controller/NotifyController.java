@@ -2,8 +2,14 @@ package net.xdclass.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import net.xdclass.enums.BizCodeEnum;
+import net.xdclass.enums.SendCodeEnum;
+import net.xdclass.service.NotifyService;
 import net.xdclass.util.CommonUtil;
+import net.xdclass.util.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +44,9 @@ public class NotifyController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private NotifyService notifyService;
+
     private final static String CAPTCHA_KEY = "user_service:captcha:";
     private final static long CAPTCHA_KEY_EXPIRE_TIME = 60 * 10 * 1000;
 
@@ -58,6 +67,24 @@ public class NotifyController {
         } catch (IOException e) {
             log.error("图形验证码异常：" + e.getMessage());
         }
+    }
+
+    @ApiOperation("发送邮箱验证码")
+    @GetMapping("send_code")
+    public JsonData sendCode(@ApiParam(value = "to") String to,
+                             @ApiParam(value = "captcha") String captcha,
+                             HttpServletRequest request) {
+
+        String captchaKey = getCaptchaKey(request);
+        String captchaValue = (String) redisTemplate.opsForValue().get(captchaKey);
+        if (captchaValue == null || !captchaValue.equalsIgnoreCase(captcha)) {
+            return JsonData.buildResult(BizCodeEnum.CODE_CAPTCHA);
+        }
+
+        //发送邮箱验证码
+        JsonData jsonData = notifyService.sendCode(SendCodeEnum.USER_REGISTER, to);
+
+        return jsonData;
     }
 
     private String getCaptchaKey(HttpServletRequest request) {
