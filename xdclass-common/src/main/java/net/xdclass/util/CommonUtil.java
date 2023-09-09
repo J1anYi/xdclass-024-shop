@@ -79,4 +79,8 @@ public class CommonUtil {
 
         return sb.toString();
     }
+
+    public static long getCurrentTimestamp() {
+        return System.currentTimeMillis();
+    }
 }

@@ -81,6 +81,7 @@ public class NotifyController {
             return JsonData.buildResult(BizCodeEnum.CODE_CAPTCHA);
         }
 
+        redisTemplate.delete(captchaKey);
         //发送邮箱验证码
         JsonData jsonData = notifyService.sendCode(SendCodeEnum.USER_REGISTER, to);
 
